@@ -4,10 +4,12 @@ from openai.types.beta.assistant_stream_event import ThreadMessageDelta
 from openai.types.beta.threads.text_delta_block import TextDeltaBlock
 import re
 
+
 def clean_response(text):
-    # Remove citation-like markers such as  
-    cleaned_text = re.sub(r'【\d+:\d+†source】', '', text)
+    # Remove citation-like markers such as
+    cleaned_text = re.sub(r"【\d+:\d+†source】", "", text)
     return cleaned_text
+
 
 OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
 ASSISTANT_ID = st.secrets["ASSISTANT_KEY"]
@@ -15,19 +17,26 @@ ASSISTANT_ID = st.secrets["ASSISTANT_KEY"]
 client = OpenAI(api_key=OPENAI_API_KEY)
 assistant = client.beta.assistants.retrieve(assistant_id=ASSISTANT_ID)
 
-st.set_page_config(
-    page_title='Banking Chatbot',
-    page_icon='💬',
-    layout='centered'
-)
+st.set_page_config(page_title="Banking Chatbot", page_icon="💬", layout="centered")
 
 if "chat_history" not in st.session_state:
-    st.session_state.chat_history = [{
-        "role": "assistant",
-        "content": "How may I assist you today?"
-    }]
+    st.session_state.chat_history = [
+        {
+            "role": "assistant",
+            "content": "How can I support your financial needs today?",
+        }
+    ]
 
-st.title("🏦 The Byte Squad - Chatbot")
+st.title("🏦 Banking chatbot")
+st.info(
+    """
+    Welcome to **The Byte Squad!** \n
+    You’re now interacting with our finance-focused chatbot powered by OpenAI’s GPT-4 API, designed to assist you with smart, personalized financial insights. 
+    Running on a synthetic dataset tailored for the financial sector, we're here to help you manage your finances, plan debt repayment, and more.
+    """,
+    icon="🤘",
+)
+st.markdown("***")
 
 for message in st.session_state.chat_history:
     with st.chat_message(message["role"]):
@@ -61,7 +70,9 @@ if user_query := st.chat_input("Input a prompt..."):
             if isinstance(event, ThreadMessageDelta):
                 if isinstance(event.data.delta.content[0], TextDeltaBlock):
                     assistant_reply_box.empty()
-                    assistant_reply += clean_response(event.data.delta.content[0].text.value)
+                    assistant_reply += clean_response(
+                        event.data.delta.content[0].text.value
+                    )
                     assistant_reply_box.markdown(assistant_reply)
 
         st.session_state.chat_history.append(
