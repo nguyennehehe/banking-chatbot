@@ -27,7 +27,7 @@ if "chat_history" not in st.session_state:
         "content": "How may I assist you today?"
     }]
 
-st.title("The Byte Squad - Chatbot")
+st.title("🏦 The Byte Squad - Chatbot")
 
 for message in st.session_state.chat_history:
     with st.chat_message(message["role"]):
