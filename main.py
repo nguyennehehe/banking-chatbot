@@ -42,29 +42,51 @@ def text_to_speech(text, voice):
 
 st.set_page_config(page_title="Banking Chatbot", page_icon="💬", layout="centered")
 
+
+def set_bg_hack(main_bg):
+    # set bg name
+    main_bg_ext = "png"
+        
+    st.markdown(
+         f"""
+         <style>
+         .stApp {{
+             background: url(data:image/{main_bg_ext};base64,{base64.b64encode(open(main_bg, "rb").read()).decode()});
+             background-size: cover;
+         }}
+         </style>
+         """,
+         unsafe_allow_html=True
+     )
+
+
+set_bg_hack("./assets/bg_reduced.png")
+
+
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = [
         {
             "role": "assistant",
-            "content": "How can I support your financial needs today?",
+            "content": "Xin chào, tôi có thể hỗ trợ bạn về nhu cầu tài chính của bạn như thế nào hôm nay?",
         }
     ]
 st.title("🏦 Banking chatbot")
-with st.expander('About this app'):
-    st.info(
+with st.expander("Thông tin về app"):
+    st.warning(
         """
-        This bot is created by **The Byte Squad!** \n
-        You’re now interacting with our finance-focused chatbot powered by OpenAI’s GPT-4 API, designed to assist you with smart, personalized financial insights. 
-        Running on a synthetic dataset tailored for the financial sector, we're here to help you manage your finances, plan debt repayment, and more.
+        Bot này được tạo bởi **The Byte Squad!** \n
+        Bạn hiện đang tương tác với chatbot tập trung vào lĩnh vực tài chính, được hỗ trợ bởi GPT-4 API của OpenAI, được thiết kế để cung cấp cho bạn những hiểu biết tài chính thông minh và cá nhân hóa.
+        Chạy trên một bộ dữ liệu tổng hợp được điều chỉnh cho lĩnh vực tài chính, chúng tôi sẵn sàng giúp bạn quản lý tài chính, lập kế hoạch trả nợ và nhiều hơn thế nữa.
         """,
         icon="🤘",
     )
 
+
 with st.sidebar:
     voice_bot = st.selectbox(
-        "Choosing chatbot's voice",
+        "Lựa chọn giọng nói cho bot",
         ["alloy", "echo", "fable", "onyx", "nova", "shimmer"],
-        help="Previews can be found [here](https://platform.openai.com/docs/guides/text-to-speech/voice-options)"
+        help="Previews can be found [here](https://platform.openai.com/docs/guides/text-to-speech/voice-options)",
     )
 
 for message in st.session_state.chat_history:
@@ -100,8 +122,8 @@ if user_query := st.chat_input("Input a prompt..."):
                         event.data.delta.content[0].text.value
                     )
                     assistant_reply_box.markdown(assistant_reply)
-        
-        with st.spinner('Generating your audio - this can take up a while'):
+
+        with st.spinner("Generating your audio - this can take up a while"):
             text_to_speech(assistant_reply, voice_bot)
 
         st.session_state.chat_history.append(
