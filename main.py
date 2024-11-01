@@ -67,16 +67,16 @@ if "chat_history" not in st.session_state:
     st.session_state.chat_history = [
         {
             "role": "assistant",
-            "content": "Xin chào, tôi có thể hỗ trợ bạn về nhu cầu tài chính của bạn như thế nào hôm nay?",
+            "content": "Hello, how can I help you today with your financial needs?",
         }
     ]
 st.title("🏦 Banking chatbot")
 with st.expander("Thông tin về app"):
     st.warning(
         """
-        Bot này được tạo bởi **The Byte Squad!** \n
-        Bạn hiện đang tương tác với chatbot tập trung vào lĩnh vực tài chính, được hỗ trợ bởi GPT-4 API của OpenAI, được thiết kế để cung cấp cho bạn những hiểu biết tài chính thông minh và cá nhân hóa.
-        Chạy trên một bộ dữ liệu tổng hợp được điều chỉnh cho lĩnh vực tài chính, chúng tôi sẵn sàng giúp bạn quản lý tài chính, lập kế hoạch trả nợ và nhiều hơn thế nữa.
+        This bot was created by **The Byte Squad!**
+        You are currently interacting with a finance-focused chatbot, powered by OpenAI's GPT-4 API, designed to provide you with smart and personalized financial insights.
+        Running on a curated dataset tailored for the financial sector, we are ready to assist you with financial management, debt repayment planning, and much more.
         """,
         icon="🤘",
     )
@@ -84,7 +84,7 @@ with st.expander("Thông tin về app"):
 
 with st.sidebar:
     voice_bot = st.selectbox(
-        "Lựa chọn giọng nói cho bot",
+        "Select chatbot voice",
         ["alloy", "echo", "fable", "onyx", "nova", "shimmer"],
         help="Previews can be found [here](https://platform.openai.com/docs/guides/text-to-speech/voice-options)",
     )
