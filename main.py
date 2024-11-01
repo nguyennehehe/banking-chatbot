@@ -71,7 +71,7 @@ if "chat_history" not in st.session_state:
         }
     ]
 st.title("🏦 Banking chatbot")
-with st.expander("Thông tin về app"):
+with st.expander("What is this app about?"):
     st.warning(
         """
         This bot was created by **The Byte Squad!**
