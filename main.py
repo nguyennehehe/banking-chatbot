@@ -80,6 +80,18 @@ with st.expander("What is this app about?"):
         """,
         icon="🤘",
     )
+    st.success(
+        """
+        **How to use:**
+
+        To begin, you will be asked to enter your customer ID. Since this is a small dataset, you can use one of the following sample IDs: 1, 2, 3, 4, etc.
+
+        Once your customer ID is confirmed, you can inquire about details such as your balance, outstanding debts, loan balances, and similar financial information. Additionally, you can seek guidance on creating an effective financial plan to manage and repay your loans efficiently.
+
+        You can enable or disable speech output using the toggle option available on the sidebar. This feature provides auditory responses to assist older users or individuals less familiar with technology, ensuring accessibility for all.
+        """,
+        icon="ℹ️"
+    )
 
 
 with st.sidebar:
@@ -88,6 +100,8 @@ with st.sidebar:
         ["alloy", "echo", "fable", "onyx", "nova", "shimmer"],
         help="Previews can be found [here](https://platform.openai.com/docs/guides/text-to-speech/voice-options)",
     )
+
+    speech_on = st.toggle("Enable speech output?")
 
 for message in st.session_state.chat_history:
     with st.chat_message(message["role"]):
@@ -123,8 +137,9 @@ if user_query := st.chat_input("Input a prompt..."):
                     )
                     assistant_reply_box.markdown(assistant_reply)
 
-        with st.spinner("Generating your audio - this can take up a while"):
-            text_to_speech(assistant_reply, voice_bot)
+        if speech_on:
+            with st.spinner("Generating your audio - this can take up a while"):
+                text_to_speech(assistant_reply, voice_bot)
 
         st.session_state.chat_history.append(
             {"role": "assistant", "content": assistant_reply}
